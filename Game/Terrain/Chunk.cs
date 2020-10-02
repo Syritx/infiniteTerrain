@@ -23,7 +23,7 @@ namespace infiniteTerrain.Game.Terrain
             for (int x = -(NUM_TILES_LENGTH/2); x < (NUM_TILES_LENGTH/2); x++) {
                 for (int z = -(NUM_TILES_LENGTH/2); z < (NUM_TILES_LENGTH/2); z++) {
 
-                    Vector2 position = new Vector2(-x*TILE_SIZE+WORLD_X,-z*TILE_SIZE+WORLD_Z);
+                    Vector2 position = new Vector2(-x*TILE_SIZE+WORLD_X-((TILE_SIZE*NUM_TILES_LENGTH)/2),-z*TILE_SIZE+WORLD_Z-((TILE_SIZE*NUM_TILES_LENGTH)/2));
                     Tile tile = new Tile(position, TILE_SIZE, noise, seed, this, WORLD_X, WORLD_Z);
                     tiles.Add(tile);
                 }

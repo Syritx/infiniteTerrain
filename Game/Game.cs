@@ -88,7 +88,7 @@ namespace infiniteTerrain.Game
             for (int x = (int)(camera.relative.X-chunkDistance); x < (int)(camera.relative.X+chunkDistance); x++) {
                 for (int z = (int)(camera.relative.Z-chunkDistance); z < (int)(camera.relative.Z+chunkDistance); z++) {
                     Console.WriteLine(x + " " + z);
-                    chunks.Add(new Chunk(x-(chunkDistance/2), z-(chunkDistance/2), noise, seed,camera));
+                    chunks.Add(new Chunk(x, z, noise, seed,camera));
                 }
             }
             return;
