@@ -47,7 +47,7 @@ namespace infiniteTerrain.Game
 
             GL.Fog(FogParameter.FogDensity, (float).01f);
             GL.Fog(FogParameter.FogStart, (float)1000/15);
-            GL.Fog(FogParameter.FogEnd, 200);
+            GL.Fog(FogParameter.FogEnd, 700);
 
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
@@ -85,8 +85,11 @@ namespace infiniteTerrain.Game
 
         void createChunks()
         {
-            for (int x = (int)(camera.relative.X-chunkDistance); x < (int)(camera.relative.X+chunkDistance); x++) {
-                for (int z = (int)(camera.relative.Z-chunkDistance); z < (int)(camera.relative.Z+chunkDistance); z++) {
+            int startX = (int)camera.position.X / (Chunk.NUM_TILES_LENGTH * Chunk.TILE_SIZE);
+            int startZ = (int)camera.position.Z / (Chunk.NUM_TILES_LENGTH * Chunk.TILE_SIZE);
+
+            for (int x = (int)(startX - chunkDistance); x < (int)(startX + chunkDistance); x++) {
+                for (int z = (int)(startZ - chunkDistance); z < (int)(startZ + chunkDistance); z++) {
                     Console.WriteLine(x + " " + z);
                     chunks.Add(new Chunk(x, z, noise, seed,camera));
                 }

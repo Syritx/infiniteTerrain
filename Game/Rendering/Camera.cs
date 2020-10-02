@@ -81,21 +81,7 @@ namespace infiniteTerrain.Game.Rendering
                 distance += speed;
                 last = position;
 
-                if (distance > (Chunk.NUM_TILES_LENGTH * Chunk.TILE_SIZE)) {
-                    int nrelz = 0;
-                    int nrelx = 0;
-
-                    if (relative.X < last.X) nrelx = -1;
-                    else nrelx = 1;
-
-                    if (relative.Z < last.Z) nrelz = -1;
-                    else nrelz = 1;
-
-                    relative.X -= nrelx;
-                    relative.Z -= nrelz;
-                    game.updateAllChunks();
-                    distance = 0;
-                }
+                game.updateAllChunks();
             }
             if (e.Key == Key.S)
             {
@@ -105,22 +91,7 @@ namespace infiniteTerrain.Game.Rendering
                 distance -= speed;
                 last = position;
 
-                if (distance < -(Chunk.NUM_TILES_LENGTH * Chunk.TILE_SIZE)) {
-
-                    int nrelz = 0;
-                    int nrelx = 0;
-
-                    if (relative.X < last.X) nrelx = -1;
-                    else nrelx = 1;
-
-                    if (relative.Z < last.Z) nrelz = -1;
-                    else nrelz = 1;
-
-                    relative.X -= nrelx;
-                    relative.Z -= nrelz;
-                    game.updateAllChunks();
-                    distance = 0;
-                }
+                game.updateAllChunks();
             }
 
             Console.WriteLine(distance);
