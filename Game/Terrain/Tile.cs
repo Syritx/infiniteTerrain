@@ -18,7 +18,7 @@ namespace infiniteTerrain.Game.Terrain
         Vector3 normalA, normalB;
         ImprovedNoise noise;
 
-        float amplitude = 19.8f;
+        float amplitude = 49.8f;
         float frequency = 1;
         float offset = Chunk.TILE_SIZE * Chunk.NUM_TILES_LENGTH;
         int seed;
@@ -27,16 +27,18 @@ namespace infiniteTerrain.Game.Terrain
         {
             this.seed = seed;
             this.noise = noise;
+
             vertices[0] = new Vector3(position.X, DEFAULT_Y, position.Y);
             vertices[1] = new Vector3(vertices[0].X + TILE_SIZE, DEFAULT_Y, position.Y);
             vertices[2] = new Vector3(vertices[0].X + TILE_SIZE, DEFAULT_Y, position.Y + TILE_SIZE);
             vertices[3] = new Vector3(vertices[0].X, DEFAULT_Y, position.Y + TILE_SIZE);
 
 
-            vertices[0].Y = (float)noise.noise((vertices[0].X / offset)*frequency + offsetx, (vertices[0].Z / offset)*frequency + offsety, seed)* amplitude;
-            vertices[1].Y = (float)noise.noise((vertices[1].X / offset)*frequency + offsetx, (vertices[1].Z / offset)*frequency + offsety, seed)* amplitude;
-            vertices[2].Y = (float)noise.noise((vertices[2].X / offset)*frequency + offsetx, (vertices[2].Z / offset)*frequency + offsety, seed)* amplitude;
-            vertices[3].Y = (float)noise.noise((vertices[3].X / offset)*frequency + offsetx, (vertices[3].Z / offset)*frequency + offsety, seed)* amplitude;
+            for (int i = 0; i < 4; i++) {
+                for (int j = 0; j < 2; j++) {
+                    vertices[i].Y += (float)noise.noise((vertices[i].X / offset) * frequency + offsetx, (vertices[i].Z / offset) * frequency + offsety, seed) * amplitude;
+                }
+            }
 
             normalA = tMath.calculateNormal(vertices[0], vertices[1], vertices[2]);
             normalB = tMath.calculateNormal(vertices[2], vertices[3], vertices[0]);
@@ -44,10 +46,9 @@ namespace infiniteTerrain.Game.Terrain
 
         public void render(float offsetx, float offsety)
         {
-            vertices[0].Y = (float)noise.noise((vertices[0].X / offset) * frequency + offsetx, (vertices[0].Z / offset) * frequency + offsety, seed) * amplitude;
-            vertices[1].Y = (float)noise.noise((vertices[1].X / offset) * frequency + offsetx, (vertices[1].Z / offset) * frequency + offsety, seed) * amplitude;
-            vertices[2].Y = (float)noise.noise((vertices[2].X / offset) * frequency + offsetx, (vertices[2].Z / offset) * frequency + offsety, seed) * amplitude;
-            vertices[3].Y = (float)noise.noise((vertices[3].X / offset) * frequency + offsetx, (vertices[3].Z / offset) * frequency + offsety, seed) * amplitude;
+            for (int i = 0; i < 4; i++) {
+                vertices[i].Y = (float)noise.noise((vertices[i].X / offset) * frequency + offsetx, (vertices[i].Z / offset) * frequency + offsety, seed) * amplitude;
+            }
 
             GL.Begin(PrimitiveType.Triangles);
             GL.Color3((double)114 / 255, (double)179 / 255, (double)29 / 255);

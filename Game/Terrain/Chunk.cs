@@ -7,7 +7,7 @@ namespace infiniteTerrain.Game.Terrain
 {
     public class Chunk
     {
-        public static int NUM_TILES_LENGTH = 6;
+        public static int NUM_TILES_LENGTH = 20;
         public static int TILE_SIZE = 10;
         List<Tile> tiles = new List<Tile>();
 

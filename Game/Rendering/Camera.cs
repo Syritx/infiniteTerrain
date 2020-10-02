@@ -17,9 +17,9 @@ namespace infiniteTerrain.Game.Rendering
         // xRotation: Up/Down rotation
         // yRotation: Left/Right rotation
         float xRotation, yRotation;
-        float speed = 10, sensitivity = .5f;
+        float speed = 20, sensitivity = .5f;
         float distance = 0;
-
+        
         Vector2 lastMousePosition;
         Game game;
 

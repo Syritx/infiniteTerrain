@@ -15,13 +15,15 @@ namespace infiniteTerrain.Game
 
         float[] fogColor = { 230, 230, 230, .1f };
 
-        float[] lightPos = { 100f, 100, 100f };
+        float[] lightPos = { 1000f, 100, 1000f };
         float[] lightDiffuse = { .15f, .16f, .32f };
         float[] lightAmbient = { .4f, .4f, .6f };
 
         List<Chunk> chunks = new List<Chunk>();
-        public static int chunkDistance = 10;
+        public static int chunkDistance = 3;
         int seed = new Random().Next(1, 100000000);
+
+        List<int> seeds = new List<int>();
 
         Camera camera;
         ImprovedNoise noise;
@@ -91,7 +93,7 @@ namespace infiniteTerrain.Game
             for (int x = (int)(startX - chunkDistance); x < (int)(startX + chunkDistance); x++) {
                 for (int z = (int)(startZ - chunkDistance); z < (int)(startZ + chunkDistance); z++) {
                     Console.WriteLine(x + " " + z);
-                    chunks.Add(new Chunk(x, z, noise, seed,camera));
+                    chunks.Add(new Chunk(x+(chunkDistance/2), z+(chunkDistance/2), noise, seed, camera));
                 }
             }
             return;
