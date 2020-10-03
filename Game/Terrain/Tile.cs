@@ -18,12 +18,12 @@ namespace infiniteTerrain.Game.Terrain
         Vector3 normalA, normalB;
         ImprovedNoise noise;
 
-        float amplitude = 49.8f;
+        float amplitude = 59.8f;
         float frequency = .5f;
         float offset = Chunk.TILE_SIZE * Chunk.NUM_TILES_LENGTH;
         int seed;
 
-        public Tile(Vector2 position, int TILE_SIZE, ImprovedNoise noise, int seed, Chunk chunk, float offsetx, float offsety)
+        public Tile(Vector2 position, int TILE_SIZE, ImprovedNoise noise, int seed)
         {
             this.seed = seed;
             this.noise = noise;
@@ -35,8 +35,8 @@ namespace infiniteTerrain.Game.Terrain
 
 
             for (int i = 0; i < 4; i++) {
-                for (int j = 0; j < 2; j++) {
-                    vertices[i].Y += (float)noise.noise((vertices[i].X / offset) * frequency + offsetx, (vertices[i].Z / offset) * frequency + offsety, seed) * amplitude;
+                for (int j = 1; j < 4; j++) {
+                    vertices[i].Y += (float)noise.noise(((vertices[i].X/offset)*(frequency*(.5f*j))), ((vertices[i].Z / offset)*(frequency*(.5f*j))), seed) * (amplitude/(.5f*j));
                 }
             }
 
@@ -44,11 +44,8 @@ namespace infiniteTerrain.Game.Terrain
             normalB = tMath.calculateNormal(vertices[2], vertices[3], vertices[0]);
         }
 
-        public void render(float offsetx, float offsety)
+        public void render()
         {
-            for (int i = 0; i < 4; i++) {
-                vertices[i].Y = (float)noise.noise((vertices[i].X / offset) * frequency + offsetx, (vertices[i].Z / offset) * frequency + offsety, seed) * amplitude;
-            }
 
             GL.Begin(PrimitiveType.Triangles);
             GL.Color3((double)114 / 255, (double)179 / 255, (double)29 / 255);

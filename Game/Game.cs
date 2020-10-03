@@ -15,13 +15,16 @@ namespace infiniteTerrain.Game
 
         float[] fogColor = { 230, 230, 230, .1f };
 
-        float[] lightPos = { 1000f, 100, 1000f };
+        float[] lightPos = { 1000f, 1000, 1000f };
         float[] lightDiffuse = { .15f, .16f, .32f };
         float[] lightAmbient = { .4f, .4f, .6f };
 
         List<Chunk> chunks = new List<Chunk>();
         public static int chunkDistance = 7;
         int seed = new Random().Next(1, 100000000);
+
+        int lastX = 0,
+            lastZ = 0;
 
         List<int> seeds = new List<int>();
 

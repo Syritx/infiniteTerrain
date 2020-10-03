@@ -24,7 +24,7 @@ namespace infiniteTerrain.Game.Terrain
                 for (int z = -(NUM_TILES_LENGTH/2); z < (NUM_TILES_LENGTH/2); z++) {
 
                     Vector2 position = new Vector2((-x*TILE_SIZE)+WORLD_X,(-z*TILE_SIZE)+WORLD_Z);
-                    Tile tile = new Tile(position, TILE_SIZE, noise, seed, this, WORLD_X, WORLD_Z);
+                    Tile tile = new Tile(position, TILE_SIZE, noise, seed);
                     tiles.Add(tile);
                 }
             }
@@ -33,7 +33,7 @@ namespace infiniteTerrain.Game.Terrain
         public void update()
         {
             foreach (Tile tile in tiles)
-                tile.render(0, 0);    
+                tile.render();    
         }
     }
 }
