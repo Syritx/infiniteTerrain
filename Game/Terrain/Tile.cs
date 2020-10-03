@@ -19,7 +19,7 @@ namespace infiniteTerrain.Game.Terrain
         ImprovedNoise noise;
 
         float amplitude = 49.8f;
-        float frequency = 1;
+        float frequency = .5f;
         float offset = Chunk.TILE_SIZE * Chunk.NUM_TILES_LENGTH;
         int seed;
 

@@ -20,7 +20,7 @@ namespace infiniteTerrain.Game
         float[] lightAmbient = { .4f, .4f, .6f };
 
         List<Chunk> chunks = new List<Chunk>();
-        public static int chunkDistance = 3;
+        public static int chunkDistance = 7;
         int seed = new Random().Next(1, 100000000);
 
         List<int> seeds = new List<int>();
@@ -49,7 +49,7 @@ namespace infiniteTerrain.Game
 
             GL.Fog(FogParameter.FogDensity, (float).01f);
             GL.Fog(FogParameter.FogStart, (float)1000/15);
-            GL.Fog(FogParameter.FogEnd, 700);
+            GL.Fog(FogParameter.FogEnd, 770);
 
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
@@ -93,7 +93,7 @@ namespace infiniteTerrain.Game
             for (int x = (int)(startX - chunkDistance); x < (int)(startX + chunkDistance); x++) {
                 for (int z = (int)(startZ - chunkDistance); z < (int)(startZ + chunkDistance); z++) {
                     Console.WriteLine(x + " " + z);
-                    chunks.Add(new Chunk(x+(chunkDistance/2), z+(chunkDistance/2), noise, seed, camera));
+                    chunks.Add(new Chunk(x +((float)chunkDistance/Chunk.TILE_SIZE), z+((float)chunkDistance/Chunk.TILE_SIZE), noise, seed, camera));
                 }
             }
             return;

@@ -7,7 +7,6 @@ namespace infiniteTerrain.Game.Rendering
 {
     public class Camera
     {
-        public Vector3 relative = new Vector3(0,0,0), last = new Vector3(0,0,0);
         public Vector3 position = new Vector3(0, 20, 0);
         public Vector3 front = new Vector3(0.0f, 0.0f, -0.001f);
         public Vector3 up = new Vector3(0.0f, .01f, 0.0f);
@@ -27,8 +26,6 @@ namespace infiniteTerrain.Game.Rendering
         public Camera(Game window)
         {
             this.game = window;
-            relative = position;
-
             window.KeyDown += keyDown;
             window.UpdateFrame += update;
 
@@ -78,9 +75,6 @@ namespace infiniteTerrain.Game.Rendering
                 if (distance < 0) distance = 0;
 
                 position += front * speed;
-                distance += speed;
-                last = position;
-
                 game.updateAllChunks();
             }
             if (e.Key == Key.S)
@@ -88,9 +82,6 @@ namespace infiniteTerrain.Game.Rendering
                 if (distance > 0) distance = 0;
 
                 position -= front * speed;
-                distance -= speed;
-                last = position;
-
                 game.updateAllChunks();
             }
 
