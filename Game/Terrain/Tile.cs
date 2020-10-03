@@ -21,8 +21,14 @@ namespace infiniteTerrain.Game.Terrain
         float frequency = 1.5f;
         float offset = Chunk.TILE_SIZE * Chunk.NUM_TILES_LENGTH;
 
-        public Tile(Vector2 position, int TILE_SIZE, ImprovedNoise noise, List<int> seed)
+        float waterLevel;
+        bool hasWater;
+
+        public Tile(Vector2 position, int TILE_SIZE, ImprovedNoise noise, List<int> seed, bool hasWater, float waterHeight)
         {
+            this.hasWater = hasWater;
+            this.waterLevel = waterHeight;
+
             vertices[0] = new Vector3(position.X, DEFAULT_Y, position.Y);
             vertices[1] = new Vector3(vertices[0].X + TILE_SIZE, DEFAULT_Y, position.Y);
             vertices[2] = new Vector3(vertices[0].X + TILE_SIZE, DEFAULT_Y, position.Y + TILE_SIZE);
@@ -53,6 +59,21 @@ namespace infiniteTerrain.Game.Terrain
             GL.Vertex3(vertices[3]);
             GL.Vertex3(vertices[0]);
             GL.End();
+
+            if (hasWater) {
+                GL.Begin(BeginMode.Triangles);
+                GL.Color4((double)5 / 255, (double)94 / 255, (double)227 / 255, 0.6);
+
+                GL.Vertex3(vertices[0].X, waterLevel, vertices[0].Z);
+                GL.Vertex3(vertices[1].X, waterLevel, vertices[1].Z);
+                GL.Vertex3(vertices[2].X, waterLevel, vertices[2].Z);
+
+                GL.Vertex3(vertices[2].X, waterLevel, vertices[2].Z);
+                GL.Vertex3(vertices[3].X, waterLevel, vertices[3].Z);
+                GL.Vertex3(vertices[0].X, waterLevel, vertices[0].Z);
+
+                GL.End();
+            }
         }
     }
 }

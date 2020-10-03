@@ -15,7 +15,7 @@ namespace infiniteTerrain.Game
         bool didTrue = false;
 
         float[] fogColor = { 230, 230, 230, .1f };
-        float[] lightPos = { 1000f, 1000, 1000f };
+        float[] lightPos = { 100f, 100, 100f };
         float[] lightDiffuse = { .15f, .16f, .32f };
         float[] lightAmbient = { .4f, .4f, .6f };
 
@@ -50,15 +50,15 @@ namespace infiniteTerrain.Game
             GL.LoadMatrix(ref view);
             GL.MatrixMode(MatrixMode.Modelview);
 
+            GL.Light(LightName.Light0, LightParameter.Position, lightPos);
+            GL.Light(LightName.Light0, LightParameter.Diffuse, lightDiffuse);
+            GL.Light(LightName.Light0, LightParameter.Ambient, lightAmbient);
+
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
             for (int i = 0; i < chunks.Count; i++) {
                 chunks[i].update();
             }
-
-            GL.Light(LightName.Light0, LightParameter.Position, lightPos);
-            GL.Light(LightName.Light0, LightParameter.Diffuse, lightDiffuse);
-            GL.Light(LightName.Light0, LightParameter.Ambient, lightAmbient);
 
             SwapBuffers();
             base.OnRenderFrame(e);
@@ -86,12 +86,20 @@ namespace infiniteTerrain.Game
 
         void createChunks()
         {
+            bool startedLoadingChunks = true;
             int startX = (int)camera.position.X / (Chunk.NUM_TILES_LENGTH * Chunk.TILE_SIZE);
             int startZ = (int)camera.position.Z / (Chunk.NUM_TILES_LENGTH * Chunk.TILE_SIZE);
 
             for (int x = (int)(startX - chunkDistance); x < (int)(startX + chunkDistance); x++) {
                 for (int z = (int)(startZ - chunkDistance); z < (int)(startZ + chunkDistance); z++) {
-                    chunks.Add(new Chunk(x +((float)chunkDistance/Chunk.TILE_SIZE), z+((float)chunkDistance/Chunk.TILE_SIZE), noise, seeds, false, 10.8f));
+
+                    if (startedLoadingChunks) {
+                        startedLoadingChunks = false;
+
+                        lightPos[0] = x;
+                        lightPos[1] = z;
+                    }
+                    chunks.Add(new Chunk(x +((float)chunkDistance/Chunk.TILE_SIZE), z+((float)chunkDistance/Chunk.TILE_SIZE), noise, seeds, true, 10.8f));
                 }
             }
             return;
@@ -103,12 +111,15 @@ namespace infiniteTerrain.Game
             GL.Enable(EnableCap.DepthTest);
 
             GL.Enable(EnableCap.Blend);
-            GL.BlendFunc(BlendingFactor.Src1Alpha, BlendingFactor.OneMinusSrcAlpha);
+            //GL.BlendFunc(BlendingFactor.Src1Alpha, BlendingFactor.OneMinusSrcAlpha);
 
             GL.Enable(EnableCap.Lighting);
             GL.Enable(EnableCap.ColorMaterial);
             GL.Enable(EnableCap.Light0);
             GL.Enable(EnableCap.Fog);
+
+            GL.Enable(EnableCap.CullFace);
+            GL.CullFace(CullFaceMode.Front);
 
             GL.Fog(FogParameter.FogMode, (int)FogMode.Linear);
             GL.Hint(HintTarget.FogHint, HintMode.Nicest);
