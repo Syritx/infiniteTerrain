@@ -1,5 +1,4 @@
 ﻿using System;
-using infiniteTerrain.Game.Terrain;
 using OpenTK;
 using OpenTK.Input;
 
@@ -16,7 +15,7 @@ namespace infiniteTerrain.Game.Rendering
         // xRotation: Up/Down rotation
         // yRotation: Left/Right rotation
         float xRotation, yRotation;
-        float speed = 20, sensitivity = .5f;
+        float speed = 40, sensitivity = .5f;
         float distance = 0;
         
         Vector2 lastMousePosition;
@@ -72,20 +71,14 @@ namespace infiniteTerrain.Game.Rendering
         {
             if (e.Key == Key.W) {
 
-                if (distance < 0) distance = 0;
-
                 position += front * speed;
                 game.updateAllChunks();
             }
             if (e.Key == Key.S)
             {
-                if (distance > 0) distance = 0;
-
                 position -= front * speed;
                 game.updateAllChunks();
             }
-
-            Console.WriteLine(distance);
         }
 
         // other function

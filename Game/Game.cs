@@ -12,15 +12,15 @@ namespace infiniteTerrain.Game
     public class Game : GameWindow
     {
         public float worldX, worldY;
+        bool didTrue = false;
 
         float[] fogColor = { 230, 230, 230, .1f };
-
         float[] lightPos = { 1000f, 1000, 1000f };
         float[] lightDiffuse = { .15f, .16f, .32f };
         float[] lightAmbient = { .4f, .4f, .6f };
 
         List<Chunk> chunks = new List<Chunk>();
-        public static int chunkDistance = 7;
+        public static int chunkDistance = 16;
         int seed = new Random().Next(1, 100000000);
 
         int lastX = 0,
@@ -33,11 +33,15 @@ namespace infiniteTerrain.Game
 
         public Game(int width, int height, string title) : base(width,height,GraphicsMode.Default,title) {
 
+            for (int i = 0; i < 20; i++) {
+                seeds.Add(new Random().Next(1, 100000000));
+            }
+
             camera = new Camera(this);
             noise = new ImprovedNoise();
             createChunks();
 
-            Run(60);
+            Run(1/60);
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)
@@ -45,14 +49,6 @@ namespace infiniteTerrain.Game
             var view = Matrix4.LookAt(camera.position, camera.position + camera.front, camera.up);
             GL.LoadMatrix(ref view);
             GL.MatrixMode(MatrixMode.Modelview);
-
-            GL.Fog(FogParameter.FogMode, (int)FogMode.Linear);
-            GL.Hint(HintTarget.FogHint, HintMode.Nicest);
-            GL.Fog(FogParameter.FogColor, fogColor);
-
-            GL.Fog(FogParameter.FogDensity, (float).01f);
-            GL.Fog(FogParameter.FogStart, (float)1000/15);
-            GL.Fog(FogParameter.FogEnd, 770);
 
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
@@ -75,7 +71,7 @@ namespace infiniteTerrain.Game
             GL.LoadIdentity();
 
             Matrix4 perspectiveMatrix =
-                Matrix4.CreatePerspectiveFieldOfView(1, Width/Height, 1.0f, 2000.0f);
+                Matrix4.CreatePerspectiveFieldOfView(1, 16/9, 1.0f, 2000.0f);
             GL.LoadMatrix(ref perspectiveMatrix);
             GL.MatrixMode(MatrixMode.Modelview);
             GL.End();
@@ -95,8 +91,7 @@ namespace infiniteTerrain.Game
 
             for (int x = (int)(startX - chunkDistance); x < (int)(startX + chunkDistance); x++) {
                 for (int z = (int)(startZ - chunkDistance); z < (int)(startZ + chunkDistance); z++) {
-                    Console.WriteLine(x + " " + z);
-                    chunks.Add(new Chunk(x +((float)chunkDistance/Chunk.TILE_SIZE), z+((float)chunkDistance/Chunk.TILE_SIZE), noise, seed, camera));
+                    chunks.Add(new Chunk(x +((float)chunkDistance/Chunk.TILE_SIZE), z+((float)chunkDistance/Chunk.TILE_SIZE), noise, seeds, false, 10.8f));
                 }
             }
             return;
@@ -106,11 +101,21 @@ namespace infiniteTerrain.Game
         {
             GL.ClearColor(0, 0, 0, 0);
             GL.Enable(EnableCap.DepthTest);
-            GL.Enable(EnableCap.Fog);
+
+            GL.Enable(EnableCap.Blend);
+            GL.BlendFunc(BlendingFactor.Src1Alpha, BlendingFactor.OneMinusSrcAlpha);
 
             GL.Enable(EnableCap.Lighting);
             GL.Enable(EnableCap.ColorMaterial);
             GL.Enable(EnableCap.Light0);
+            GL.Enable(EnableCap.Fog);
+
+            GL.Fog(FogParameter.FogMode, (int)FogMode.Linear);
+            GL.Hint(HintTarget.FogHint, HintMode.Nicest);
+            GL.Fog(FogParameter.FogColor, fogColor);
+
+            GL.Fog(FogParameter.FogStart, (float)1000 / 1005);
+            GL.Fog(FogParameter.FogEnd, 2050);
 
             base.OnLoad(e);
         }
